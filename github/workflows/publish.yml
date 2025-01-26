@@ -1,0 +1,69 @@
+name: Publish Package
+
+on:
+  release:
+    types: [created]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18.x'
+          registry-url: 'https://registry.npmjs.org'
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8
+          run_install: false
+
+      - name: Get pnpm store directory
+        shell: bash
+        run: |
+          echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
+
+      - name: Setup pnpm cache
+        uses: actions/cache@v3
+        with:
+          path: ${{ env.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Run tests
+        run: pnpm test
+
+      - name: Build
+        run: pnpm build
+
+      - name: Publish to npm
+        run: pnpm publish --access public --no-git-checks
+        env:
+          NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
+
+  notify:
+    needs: build
+    runs-on: ubuntu-latest
+    if: always()
+    steps:
+      - name: Notify on success
+        if: ${{ needs.build.result == 'success' }}
+        run: |
+          curl -X POST -H "Content-Type: application/json" \
+          -d '{"content":"✅ Package **${{ github.event.release.tag_name }}** published successfully!"}' \
+          ${{ secrets.DISCORD_WEBHOOK_URL }}
+
+      - name: Notify on failure
+        if: ${{ needs.build.result == 'failure' }}
+        run: |
+          curl -X POST -H "Content-Type: application/json" \
+          -d '{"content":"❌ Package publish failed for **${{ github.event.release.tag_name }}**! Check GitHub Actions logs."}' \
+          ${{ secrets.DISCORD_WEBHOOK_URL }}
