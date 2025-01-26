@@ -30,7 +30,10 @@ jobs:
           node-version: '18.x'
           registry-url: 'https://registry.npmjs.org'
 
-      - name: Install dependencies
+      - name: Install pnpm (global)
+        run: npm install -g pnpm
+
+      - name: Install dependencies (npm)
         run: npm ci
 
       - name: Run tests
