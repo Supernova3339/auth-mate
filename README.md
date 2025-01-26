@@ -1,4 +1,4 @@
-# React Modern Auth
+# @auth-mate/react
 
 A modern, type-safe authentication library for React applications with built-in support for popular OAuth providers and customizable configurations.
 
@@ -16,11 +16,11 @@ A modern, type-safe authentication library for React applications with built-in 
 ## Installation
 
 ```bash
-npm install react-modern-auth
+npm install @auth-mate/react
 # or
-yarn add react-modern-auth
+yarn add @auth-mate/react
 # or
-pnpm add react-modern-auth
+pnpm add @auth-mate/react
 ```
 
 ## Quick Start
@@ -28,7 +28,7 @@ pnpm add react-modern-auth
 ### 1. Configure Your Provider
 
 ```typescript
-import { AuthProvider } from 'react-modern-auth';
+import { AuthProvider } from '@auth-mate/react';
 
 const config = {
   providers: {
@@ -61,7 +61,7 @@ function App() {
 ### 2. Use the Authentication Hook
 
 ```typescript
-import { useAuth } from 'react-modern-auth';
+import { useAuth } from '@auth-mate/react';
 
 function LoginButton() {
   const { login, isAuthenticated, user } = useAuth();
@@ -224,8 +224,8 @@ interface User {
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/yourusername/react-modern-auth.git
-cd react-modern-auth
+git clone https://github.com/supenova3339/auth-mate.git
+cd auth-mate
 ```
 
 2. Install dependencies:

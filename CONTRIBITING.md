@@ -1,6 +1,6 @@
-# Contributing to React Modern Auth
+# Contributing to Auth Mate
 
-We love your input! We want to make contributing to React Modern Auth as easy and transparent as possible, whether it's:
+We love your input! We want to make contributing to Auth Mate as easy and transparent as possible, whether it's:
 
 - Reporting a bug
 - Discussing the current state of the code
@@ -23,9 +23,9 @@ We use GitHub to host code, to track issues and feature requests, as well as acc
 
 In short, when you submit code changes, your submissions are understood to be under the same [MIT License](http://choosealicense.com/licenses/mit/) that covers the project. Feel free to contact the maintainers if that's a concern.
 
-## Report bugs using GitHub's [issue tracker](https://github.com/yourusername/react-modern-auth/issues)
+## Report bugs using GitHub's [issue tracker](https://github.com/supernova3339/auth-mate/issues)
 
-We use GitHub issues to track public bugs. Report a bug by [opening a new issue](https://github.com/yourusername/react-modern-auth/issues/new).
+We use GitHub issues to track public bugs. Report a bug by [opening a new issue](https://github.com/supernova3339/auth-mate/issues/new).
 
 ## Write bug reports with detail, background, and sample code
 
@@ -48,10 +48,10 @@ We use GitHub issues to track public bugs. Report a bug by [opening a new issue]
 2. Setup steps:
 ```bash
 # Clone your fork
-git clone https://github.com/<your-username>/react-modern-auth.git
+git clone https://github.com/supernova3339/auth-mate.git
 
 # Navigate to the project directory
-cd react-modern-auth
+cd auth-mate
 
 # Install dependencies
 pnpm install
