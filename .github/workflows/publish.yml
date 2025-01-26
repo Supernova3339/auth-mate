@@ -3,12 +3,26 @@ name: Publish Package
 on:
   release:
     types: [created]
+  workflow_dispatch:
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          fetch-tags: true
+
+      - name: Determine release tag
+        id: get-tag
+        run: |
+          if [[ "${{ github.event_name }}" == "release" ]]; then
+            echo "tag=${{ github.event.release.tag_name }}" >> $GITHUB_OUTPUT
+          else
+            LATEST_TAG=$(git describe --tags --abbrev=0)
+            echo "tag=$LATEST_TAG" >> $GITHUB_OUTPUT
+          fi
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -16,36 +30,17 @@ jobs:
           node-version: '18.x'
           registry-url: 'https://registry.npmjs.org'
 
-      - name: Install pnpm
-        uses: pnpm/action-setup@v2
-        with:
-          version: 8
-          run_install: false
-
-      - name: Get pnpm store directory
-        shell: bash
-        run: |
-          echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
-
-      - name: Setup pnpm cache
-        uses: actions/cache@v3
-        with:
-          path: ${{ env.STORE_PATH }}
-          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
-          restore-keys: |
-            ${{ runner.os }}-pnpm-store-
-
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+        run: npm ci
 
       - name: Run tests
-        run: pnpm test
+        run: npm test
 
       - name: Build
-        run: pnpm build
+        run: npm run build
 
       - name: Publish to npm
-        run: pnpm publish --access public --no-git-checks
+        run: npm publish --access public
         env:
           NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
 
@@ -58,12 +53,12 @@ jobs:
         if: ${{ needs.build.result == 'success' }}
         run: |
           curl -X POST -H "Content-Type: application/json" \
-          -d '{"content":"✅ Package **${{ github.event.release.tag_name }}** published successfully!"}' \
+          -d '{"content":"✅ Package **${{ steps.get-tag.outputs.tag }}** published successfully!"}' \
           ${{ secrets.DISCORD_WEBHOOK_URL }}
 
       - name: Notify on failure
         if: ${{ needs.build.result == 'failure' }}
         run: |
           curl -X POST -H "Content-Type: application/json" \
-          -d '{"content":"❌ Package publish failed for **${{ github.event.release.tag_name }}**! Check GitHub Actions logs."}' \
+          -d '{"content":"❌ Package publish failed for **${{ steps.get-tag.outputs.tag }}**! Check GitHub Actions logs."}' \
           ${{ secrets.DISCORD_WEBHOOK_URL }}
