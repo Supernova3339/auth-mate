@@ -31,7 +31,7 @@ jobs:
         run: pnpm install
 
       - name: Install tsx
-        run: pnpm add -D tsx
+        run: pnpm add -D -w tsx
 
       - name: Create Release Pull Request or Publish
         id: changesets
