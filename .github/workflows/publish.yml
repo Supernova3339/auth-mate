@@ -10,6 +10,9 @@ on:
 jobs:
   publish:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write  # This grants write access to the repository contents
+      pull-requests: write  # This allows creating and modifying pull requests
     steps:
       - uses: actions/checkout@v4
         with:
@@ -30,9 +33,6 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
-      - name: Install tsx
-        run: pnpm add -D -w tsx
-
       - name: Create Release Pull Request or Publish
         id: changesets
         uses: changesets/action@v1
@@ -41,5 +41,5 @@ jobs:
           commit: "chore: version packages"
           title: "chore: version packages"
         env:
-          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
