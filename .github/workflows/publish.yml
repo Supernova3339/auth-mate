@@ -11,8 +11,9 @@ jobs:
   publish:
     runs-on: ubuntu-latest
     permissions:
-      contents: write  # This grants write access to the repository contents
-      pull-requests: write  # This allows creating and modifying pull requests
+      contents: write  # Write access to repository contents
+      pull-requests: write  # Explicitly allow creating pull requests
+      issues: write  # Often helpful to have write access to issues as well
     steps:
       - uses: actions/checkout@v4
         with:
