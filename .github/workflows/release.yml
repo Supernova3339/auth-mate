@@ -24,11 +24,14 @@ jobs:
         id: get_version
         run: |
           if [ -n "${{ github.event.inputs.version }}" ]; then
-            echo "VERSION=${{ github.event.inputs.version }}" >> $GITHUB_OUTPUT
+            VERSION="${{ github.event.inputs.version }}"
           else
             VERSION=$(git describe --tags --abbrev=0)
-            echo "VERSION=$VERSION" >> $GITHUB_OUTPUT
           fi
+          # Remove 'v' prefix for npm
+          NPM_VERSION=${VERSION#v}
+          echo "VERSION=$VERSION" >> $GITHUB_OUTPUT
+          echo "NPM_VERSION=$NPM_VERSION" >> $GITHUB_OUTPUT
 
       - name: Setup PNPM
         uses: pnpm/action-setup@v2
@@ -54,7 +57,7 @@ jobs:
       - name: Publish to NPM
         run: |
           echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > .npmrc
-          pnpm -r publish --access public --no-git-checks --tag ${{ steps.get_version.outputs.VERSION }}
+          pnpm -r publish --access public --no-git-checks --tag ${{ steps.get_version.outputs.NPM_VERSION }}
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
