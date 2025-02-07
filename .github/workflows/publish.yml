@@ -11,9 +11,8 @@ jobs:
   publish:
     runs-on: ubuntu-latest
     permissions:
-      contents: write  # Write access to repository contents
-      pull-requests: write  # Explicitly allow creating pull requests
-      issues: write  # Often helpful to have write access to issues as well
+      contents: write
+      pull-requests: write
     steps:
       - uses: actions/checkout@v4
         with:
@@ -34,9 +33,10 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
-      - name: Create Release Pull Request or Publish
+      - name: Create Release Pull Request or Publish with Changesets
         id: changesets
         uses: changesets/action@v1
+        continue-on-error: true
         with:
           publish: pnpm release
           commit: "chore: version packages"
@@ -44,3 +44,24 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Fallback Release Strategy
+        if: steps.changesets.outcome == 'failure'
+        run: |
+          # Manual versioning and publishing
+          pnpm version patch
+          pnpm publish -r --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Create GitHub Release
+        if: steps.changesets.outcome == 'failure'
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: v${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          draft: false
+          prerelease: false
