@@ -1,285 +1,107 @@
-# @auth-mate/react
+// @ts-nocheck
+<p align="center">
+  <img src="https://raw.githubusercontent.com/supernova3339/auth-mate/main/docs/logo.png" alt="Auth Mate Logo" width="120">
+</p>
 
-A modern, type-safe authentication library for React applications with built-in support for popular OAuth providers and customizable configurations.
+<h1 align="center">Auth Mate</h1>
+
+<p align="center">
+  <a href="https://www.npmjs.com/package/@auth-mate/react">
+    <img src="https://img.shields.io/npm/v/@auth-mate/react?style=flat-square" alt="npm version">
+  </a>
+  <a href="https://github.com/supernova3339/auth-mate/actions">
+    <img src="https://img.shields.io/github/actions/workflow/status/supernova3339/auth-mate/ci.yml?style=flat-square" alt="build status">
+  </a>
+  <a href="https://github.com/supernova3339/auth-mate/blob/main/LICENSE">
+    <img src="https://img.shields.io/npm/l/@auth-mate/react?style=flat-square" alt="license">
+  </a>
+</p>
+
+Auth Mate is a modern, type-safe authentication library for React applications with built-in support for popular OAuth providers and customizable configurations.
 
 ## Features
 
-- 🔒 Built-in support for popular OAuth providers (Google, GitHub, Microsoft)
+- 🔒 Built-in support for popular OAuth providers:
+  - Google
+  - GitHub 
+  - Microsoft
 - 🎨 Custom provider support
 - 🔐 PKCE authentication flow
 - 📦 Zero dependencies (except React)
 - 💪 Full TypeScript support
 - 🔄 Automatic token refresh
-- 💾 Configurable storage (localStorage, sessionStorage, or memory)
+- 💾 Configurable storage options (localStorage, sessionStorage, memory)
 - 🎯 Enterprise support (custom domains, tenants)
+
+## Packages
+
+- `@auth-mate/core` - Core utilities and types
+- `@auth-mate/providers` - OAuth provider implementations
+- `@auth-mate/react` - React components and hooks
 
 ## Installation
 
 ```bash
+# Install with your preferred package manager
 npm install @auth-mate/react
 # or
-yarn add @auth-mate/react
+pnpm add @auth-mate/react 
 # or
-pnpm add @auth-mate/react
+yarn add @auth-mate/react
 ```
 
 ## Quick Start
 
-### 1. Configure Your Provider
-
 ```typescript
-import { AuthProvider } from '@auth-mate/react';
+import { AuthProvider, useAuth } from '@auth-mate/react';
 
 const config = {
   providers: {
     google: {
-      clientId: 'your-google-client-id',
-      redirectUri: 'http://localhost:3000/callback',
-      scope: 'openid profile email'
+      clientId: 'your-client-id', 
+      redirectUri: 'http://localhost:3000/callback'
     }
-  },
-  // Optional common settings
-  storage: {
-    type: 'localStorage',
-    prefix: 'myapp:auth:'
-  },
-  autoRefresh: {
-    enabled: true,
-    timeBuffer: 300 // refresh 5 minutes before expiry
   }
 };
 
 function App() {
   return (
     <AuthProvider config={config}>
-      <YourApp />
+      <Router>
+        <AppContent />
+      </Router>  
     </AuthProvider>
   );
 }
-```
-
-### 2. Use the Authentication Hook
-
-```typescript
-import { useAuth } from '@auth-mate/react';
 
 function LoginButton() {
   const { login, isAuthenticated, user } = useAuth();
-
+  
   if (isAuthenticated) {
     return <div>Welcome, {user.name}!</div>;
   }
-
+  
   return <button onClick={() => login('google')}>Login with Google</button>;
 }
 ```
 
-## Provider Configuration
+## Documentation
 
-### Google
+For detailed documentation and API reference, visit the [Auth Mate Docs](https://auth-mate.dev). ( coming soon! )
 
-```typescript
-const config = {
-  providers: {
-    google: {
-      clientId: 'your-client-id',
-      redirectUri: 'http://localhost:3000/callback',
-      scope: 'openid profile email',
-      accessType: 'offline', // for refresh tokens
-      prompt: 'consent'
-    }
-  }
-};
-```
+## Examples
 
-### GitHub
+Check out the [examples directory](https://github.com/supernova3339/auth-mate/tree/main/examples) for sample projects demonstrating various authentication flows and configurations. \
+Please note, expamples are coming soon!
 
-```typescript
-const config = {
-  providers: {
-    github: {
-      clientId: 'your-client-id',
-      redirectUri: 'http://localhost:3000/callback',
-      scope: 'read:user user:email',
-      // For GitHub Enterprise
-      domain: 'github.yourcompany.com'
-    }
-  }
-};
-```
+## Contributing
 
-### Microsoft
-
-```typescript
-const config = {
-  providers: {
-    microsoft: {
-      clientId: 'your-client-id',
-      redirectUri: 'http://localhost:3000/callback',
-      scope: 'openid profile email User.Read',
-      // For specific tenant
-      domain: 'your-tenant-id'
-    }
-  }
-};
-```
-
-### Custom Provider
-
-```typescript
-const config = {
-  providers: {
-    custom: {
-      clientId: 'your-client-id',
-      redirectUri: 'http://localhost:3000/callback',
-      authorizationUrl: 'https://auth.provider.com/authorize',
-      tokenUrl: 'https://auth.provider.com/token',
-      userInfoUrl: 'https://api.provider.com/userinfo',
-      scope: 'openid profile email',
-      // Map provider's user info response to standard format
-      userInfoMapping: {
-        id: 'sub',
-        email: 'email',
-        name: 'name',
-        picture: 'picture'
-      },
-      // Additional parameters
-      extraParams: {
-        authorization: {
-          audience: 'api://default'
-        },
-        token: {
-          resource: 'https://api.provider.com'
-        }
-      },
-      // Custom headers
-      headers: {
-        authorization: {
-          'x-custom-header': 'value'
-        }
-      }
-    }
-  }
-};
-```
-
-## Common Configuration Options
-
-```typescript
-const config = {
-  // Provider configurations...
-  
-  // Storage configuration
-  storage: {
-    type: 'localStorage' | 'sessionStorage' | 'memory',
-    prefix: 'auth:' // prefix for storage keys
-  },
-
-  // Auto refresh configuration
-  autoRefresh: {
-    enabled: boolean,
-    timeBuffer: number // seconds before expiry to refresh
-  },
-
-  // Navigation configuration
-  navigation: {
-    loginSuccessPath: '/dashboard',
-    logoutPath: '/login',
-    preservePath: true // preserve current path after login
-  }
-};
-```
-
-## Hook API
-
-The `useAuth` hook provides the following interface:
-
-```typescript
-interface AuthContextValue {
-  // Authentication state
-  isAuthenticated: boolean;
-  isLoading: boolean;
-  user: User | null;
-  error: Error | null;
-
-  // Authentication methods
-  login: (provider: Provider) => Promise<void>;
-  logout: () => Promise<void>;
-  getToken: () => Promise<string | null>;
-}
-
-interface User {
-  id: string;
-  email: string;
-  name: string;
-  picture?: string;
-  provider: Provider;
-  raw: any; // Original provider response
-}
-```
-
-## Development
-
-### Setup
-
-1. Clone the repository:
-```bash
-git clone https://github.com/supenova3339/auth-mate.git
-cd auth-mate
-```
-
-2. Install dependencies:
-```bash
-pnpm install
-```
-
-3. Run tests:
-```bash
-pnpm test
-```
-
-### Building
-
-```bash
-pnpm build
-```
-
-This will create:
-- CommonJS (`.js`)
-- ES Modules (`.mjs`)
-- TypeScript declarations (`.d.ts`)
-
-### Testing
-
-The project uses Vitest for testing. Test files are located in `src/__tests__`.
-
-```bash
-# Run tests
-pnpm test
-
-# Run tests with coverage
-pnpm test:coverage
-
-# Run tests in watch mode
-pnpm test:watch
-```
-
-### Contributing
-
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
+Contributions are welcome! Please read the [contributing guide](https://github.com/supernova3339/auth-mate/blob/main/CONTRIBUTING.md) to get started.
 
 ## License
 
-MIT
-
-## Security
-
-For security concerns, please email supernova@superdev.one.
+This project is licensed under the [MIT License](https://github.com/supernova3339/auth-mate/blob/main/LICENSE).
 
 ## Support
 
-For support questions, please open an issue on GitHub.
+For any questions or issues, please [open an issue](https://github.com/supernova3339/auth-mate/issues/new) on GitHub.
