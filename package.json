@@ -1,60 +1,30 @@
 {
-  "name": "@auth-mate/react",
-  "version": "1.0.0",
-  "description": "Modern React authentication library with first-party libraries and provider support",
-  "main": "dist/index.js",
-  "module": "dist/index.mjs",
-  "types": "dist/index.d.ts",
-  "files": [
-    "dist",
-    "README.md",
-    "LICENSE"
-  ],
+  "name": "auth-mate",
+  "private": true,
   "scripts": {
-    "build": "tsup src/index.ts --format cjs,esm --dts",
-    "test": "vitest run",
-    "test:coverage": "vitest run --coverage",
-    "test:watch": "vitest",
-    "lint": "eslint src/",
-    "prepublishOnly": "pnpm run build"
-  },
-  "publishConfig": {
-    "access": "public"
-  },
-  "keywords": [
-    "react",
-    "authentication",
-    "oauth",
-    "typescript",
-    "google",
-    "github",
-    "microsoft"
-  ],
-  "author": "Supernova3339 <supernova@superdev.one>",
-  "license": "MIT",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/supernova3339/auth-mate.git"
-  },
-  "bugs": {
-    "url": "https://github.com/supernova3339/auth-mate/issues"
-  },
-  "homepage": "https://github.com/supernova3339/auth-mate#readme",
-  "peerDependencies": {
-    "react": "^18.0.0"
+    "build": "tsx scripts/build.ts",
+    "dev": "pnpm -r dev",
+    "test": "tsx scripts/test.ts",
+    "test:watch": "tsx scripts/test.ts --watch",
+    "test:coverage": "tsx scripts/test.ts --coverage",
+    "lint": "pnpm -r lint",
+    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
+    "clean": "pnpm -r clean",
+    "typecheck": "pnpm -r typecheck",
+    "changeset": "changeset",
+    "version-packages": "changeset version",
+    "release": "pnpm build && changeset publish"
   },
   "devDependencies": {
-    "@types/react": "^18.2.0",
-    "@typescript-eslint/eslint-plugin": "^6.0.0",
-    "@typescript-eslint/parser": "^6.0.0",
-    "@vitest/coverage-v8": "^1.2.0",
-    "eslint": "^8.0.0",
-    "jsdom": "^24.0.0",
-    "tsup": "^8.0.0",
-    "typescript": "^5.0.0",
-    "vitest": "^1.0.0"
-  },
-  "dependencies": {
-    "@vitejs/plugin-react": "^4.3.4"
+    "@changesets/cli": "^2.27.1",
+    "@types/node": "^20.11.16",
+    "@typescript-eslint/eslint-plugin": "^6.20.0",
+    "@typescript-eslint/parser": "^6.20.0",
+    "eslint": "^8.56.0",
+    "eslint-config-prettier": "^9.1.0",
+    "prettier": "^3.2.5",
+    "rimraf": "^5.0.5",
+    "tsup": "^8.0.1",
+    "typescript": "^5.3.3"
   }
 }
