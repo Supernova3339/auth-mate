@@ -29,6 +29,9 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
+      - name: Install tsx to workspace root
+        run: pnpm add -D -w tsx
+
       - name: Build
         run: pnpm build
 
