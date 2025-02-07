@@ -1,6 +1,6 @@
 {
   "name": "@auth-mate/react",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "React authentication library with built-in provider support",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
