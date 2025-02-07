@@ -57,8 +57,8 @@ jobs:
       - name: Publish to NPM
         run: |
           echo "Attempting to publish version ${{ steps.get_version.outputs.NPM_VERSION }}"
-          echo "//registry.npmjs.org/:_authToken=***" > .npmrc
-          pnpm -r publish --access public --no-git-checks
+          echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > .npmrc
+          pnpm -r publish --access public --no-git-checks --publish-branch main
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
