@@ -2,7 +2,7 @@ import { execSync } from 'child_process';
 import { existsSync, rmSync } from 'fs';
 import { join } from 'path';
 
-const packages = ['core', 'providers', 'react'];
+const packages = ['core', 'providers', 'react', 'adapters-prisma'];
 
 function cleanDist(pkg: string) {
   const distPath = join(__dirname, '../packages', pkg, 'dist');

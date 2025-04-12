@@ -13,7 +13,8 @@
     "typecheck": "pnpm -r typecheck",
     "changeset": "changeset",
     "version-packages": "changeset version",
-    "release": "pnpm build && changeset publish"
+    "release": "pnpm build && changeset publish",
+    "list-packs": "tsx scripts/packages.ts"
   },
   "devDependencies": {
     "@changesets/cli": "^2.27.12",

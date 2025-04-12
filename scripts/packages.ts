@@ -9,7 +9,7 @@ export interface PackageInfo {
 }
 
 export function getPackages(): PackageInfo[] {
-  const packagesDir = join(__dirname, '../../packages');
+  const packagesDir = join(__dirname, '../packages');
   return readdirSync(packagesDir)
     .filter(dir => !dir.startsWith('.'))
     .map(dir => {

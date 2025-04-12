@@ -1,4 +1,3 @@
-// @ts-nocheck
 <p align="center">
   <img src="https://raw.githubusercontent.com/supernova3339/auth-mate/main/docs/logo.png" alt="Auth Mate Logo" width="120">
 </p>
@@ -38,6 +37,7 @@ Auth Mate is a modern, type-safe authentication library for React applications w
 - `@auth-mate/core` - Core utilities and types
 - `@auth-mate/providers` - OAuth provider implementations
 - `@auth-mate/react` - React components and hooks
+- `@auth-mate/adapters-prisma` - Prisma database adapter for persistent storage
 
 ## Installation
 
@@ -92,7 +92,7 @@ For detailed documentation and API reference, visit the [Auth Mate Docs](https:/
 ## Examples
 
 Check out the [examples directory](https://github.com/supernova3339/auth-mate/tree/main/examples) for sample projects demonstrating various authentication flows and configurations. \
-Please note, expamples are coming soon!
+Please note, examples are coming soon!
 
 ## Contributing
 

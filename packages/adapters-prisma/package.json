@@ -1,0 +1,41 @@
+{
+  "name": "@auth-mate/adapters-prisma",
+  "version": "1.0.0",
+  "description": "Prisma database adapter for Auth Mate",
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "sideEffects": false,
+  "files": [
+    "dist/**"
+  ],
+  "scripts": {
+    "build": "tsup src/index.ts --format cjs,esm --dts --clean",
+    "dev": "tsup src/index.ts --format cjs,esm --dts --watch",
+    "clean": "rimraf dist && rimraf .turbo",
+    "lint": "eslint \"src/**/*.ts*\"",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "typecheck": "tsc --noEmit",
+    "setup": "tsx src/scripts/setup.ts"
+  },
+  "dependencies": {
+    "@auth-mate/adapters-prisma": "^1.0.0",
+    "@auth-mate/core": "workspace:*",
+    "@prisma/client": "^5.7.0"
+  },
+  "peerDependencies": {
+    "prisma": "^5.7.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.16",
+    "eslint": "^8.56.0",
+    "prisma": "^5.7.0",
+    "tsup": "^8.0.1",
+    "typescript": "^5.3.3",
+    "vitest": "^1.2.2"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
